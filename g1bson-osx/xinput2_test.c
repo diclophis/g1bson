@@ -3,6 +3,10 @@
 #include <string.h>
 #include <X11/Xlib.h>
 #include <X11/extensions/XInput2.h>
+#include <X11/keysym.h>
+#include <X11/extensions/XI2.h>
+#include <X11/extensions/XInput.h>
+#include <X11/Xatom.h>
 
 static Window create_win(Display *dpy)
 {
@@ -207,6 +211,229 @@ static void create_remove_master(Display *dpy, int xi_opcode)
 }
 
 
+static void
+add_mpx_for_window (
+  Display *dsp,
+  char *name,
+  int *master_kbd,
+  int *slave_kbd,
+  int *master_ptr,
+  int *slave_ptr
+)
+{
+  XIAddMasterInfo add;
+  int ndevices;
+  XIDeviceInfo *devices, *device;
+  int i;
+
+  /* add the device */
+
+  add.type = XIAddMaster;
+  add.name = name;
+  add.send_core = True;
+  add.enable = True;
+
+  XIChangeHierarchy (dsp,
+                     (XIAnyHierarchyChangeInfo*) &add,
+                     1);
+
+  /* now see whether it's in the list */
+
+  *master_kbd = -1;
+  *slave_kbd = -1;
+  *master_ptr = -1;
+
+  devices = XIQueryDevice(dsp,
+                          XIAllDevices, &ndevices);
+
+  for (i = 0; i < ndevices; i++) {
+    device = &devices[i];
+
+
+    int j;
+    int m = 1;
+    for (j = 0; j<strlen(name); j++) {
+      if (device->name[j] != name[j]) {
+        m = 0;
+      }
+    }
+
+    if (
+      m
+    //strcmp(device->name,
+    //                      name) == 0
+    )
+      //printf("%s == %s %d\n", device->name, name, strlen(name));
+      {
+        switch (device->use)
+          {
+          case XIMasterKeyboard:
+            *master_kbd = device->deviceid;
+            break;
+
+          case XISlaveKeyboard:
+            *slave_kbd = device->deviceid;
+            break;
+
+          case XIMasterPointer:
+            *master_ptr = device->deviceid;
+            break;
+
+          case XISlavePointer:
+            *slave_ptr = device->deviceid;
+            break;
+          }
+      }
+  }
+
+  if (*master_kbd==-1 || *slave_kbd==-1 || *master_ptr==-1 || *slave_ptr==-1)
+    {
+      printf ("The new pointer '%s' could not be created.\n",
+                 name);
+    }
+
+  XIFreeDeviceInfo(devices);
+}
+
+static void
+drop_mpx (Display *dsp, int mpx)
+{
+  XIRemoveMasterInfo drop;
+
+  drop.type = XIRemoveMaster;
+  drop.deviceid = mpx;
+  drop.return_mode = XIAttachToMaster;
+  drop.return_pointer = 2; // keyboard
+  drop.return_keyboard = 3; // mouse
+
+  XIChangeHierarchy (dsp,
+                     (XIAnyHierarchyChangeInfo*) &drop,
+                     1);
+  XFlush(dsp);
+}
+
+
+static void
+fake_keystroke (Display *dsp, int window_id, char symbol,
+int xid_master_kbd, int xid_slave_kbd,
+int xid_master_ptr, int xid_slave_ptr
+)
+{
+printf("typing %d\n", window_id);
+  int code = XKeysymToKeycode (dsp, symbol);
+
+  int dummy[1] = { 0 };
+
+  int current_pointer;
+  XDevice *dev;
+
+      dev = XOpenDevice (dsp,
+                         xid_slave_kbd);
+
+      XIGetClientPointer (dsp,
+                          None,
+                          &current_pointer);
+
+      XISetClientPointer (dsp,
+                          None,
+                          xid_master_ptr);
+
+      XSetInputFocus (dsp,
+                      (Window) window_id, PointerRoot,
+                      CurrentTime);
+
+      if (XTestFakeDeviceKeyEvent (dsp,
+                                   dev,
+                                   code,
+                                   True,
+                                   dummy, 0, CurrentTime)==0)
+        {
+          printf ("Faking key event failed.\n");
+        }
+      XFlush (dsp);
+
+      if (XTestFakeDeviceKeyEvent (dsp,
+                                   dev,
+                                   code,
+                                   False,
+                                   dummy, 0, CurrentTime)==0)
+        {
+          printf ("Faking key event failed 2.\n");
+        }
+      XFlush (dsp);
+
+      XISetClientPointer (dsp,
+                          None,
+                          current_pointer);
+  
+      XCloseDevice (dsp,
+                    dev);
+
+
+  XFlush (dsp);
+}
+
+  unsigned long  _pid;
+  Atom           _atomPID;
+  Display       *_display;
+  Window        proofWin;
+
+    void search(Window w)
+    {
+    // Get the PID for the current Window.
+      Atom           type;
+      int            format;
+      unsigned long  nItems;
+      unsigned long  bytesAfter;
+      unsigned char *propPID = 0;
+      if(Success == XGetWindowProperty(_display, w, _atomPID, 0, 1, False, XA_CARDINAL,
+                                       &type, &format, &nItems, &bytesAfter, &propPID))
+      {
+        if(propPID != 0)
+        {
+
+printf("PID: %lu\n", (*((unsigned long *)propPID)));
+proofWin = w;
+
+        // If the PID matches, add this window to the result set.
+
+          //if(_pid == *((unsigned long *)propPID))
+          //  _result.push_back(w);
+
+          XFree(propPID);
+        }
+      }
+
+    // Recurse into child windows.
+      Window    wRoot;
+      Window    wParent;
+      Window   *wChild;
+      unsigned  nChildren;
+      if(0 != XQueryTree(_display, w, &wRoot, &wParent, &wChild, &nChildren))
+      {
+        unsigned i;
+        for(i = 0; i < nChildren; i++)
+          search(wChild[i]);
+      }
+    }
+
+
+void WindowsMatchingPid(Display *display, Window wRoot, unsigned long pid) {
+    // Get the PID property atom.
+      _atomPID = XInternAtom(display, "_NET_WM_PID", True);
+      if(_atomPID == None)
+      {
+        printf("No such atom\n");
+        return;
+      }
+
+      _display = display;
+      _pid = pid;
+
+      search(wRoot);
+}
+
+
 int main (int argc, char **argv)
 {
     Display *dpy;
@@ -229,13 +456,53 @@ int main (int argc, char **argv)
     if (!has_xi2(dpy))
         return -1;
 
-win = create_win(dpy);
 
-    select_events(dpy, win);
+    //win = create_win(dpy);
+
+    //select_events(dpy, win);
 
     if (1) {
-      list_devices(dpy, XIAllDevices);
-      create_remove_master(dpy, xi_opcode);
+      //list_devices(dpy, XIAllDevices);
+      //create_remove_master(dpy, xi_opcode);
+
+      int xid_master_kbd, xid_slave_kbd,
+          xid_master_ptr, xid_slave_ptr;
+      int current_pointer;
+      //XDevice *dev;
+
+      add_mpx_for_window (dpy, "test", // name must be uniq
+        &xid_master_kbd,
+        &xid_slave_kbd,
+        &xid_master_ptr,
+        &xid_slave_ptr);
+
+
+
+
+    Screen *screen = XDefaultScreenOfDisplay(dpy);
+    //dpy->width = XWidthOfScreen(screen);
+    //dpy->height = XHeightOfScreen(screen);
+    Window rootWindow = XRootWindowOfScreen(screen);
+
+    WindowsMatchingPid(dpy, rootWindow, 0);
+
+    //dpy->targetAtom = XInternAtom(dpy->display, "TARGETS", False);
+
+    fake_keystroke(dpy, proofWin, 'X', xid_master_kbd, xid_slave_kbd, xid_master_ptr, xid_slave_ptr);
+
+      drop_mpx(dpy, xid_master_kbd);
+
+/*
+    remove.type = XIRemoveMaster;
+    remove.deviceid = new_master_id;
+    remove.return_mode = XIAttachToMaster;
+    remove.return_pointer = 2; //
+    remove.return_keyboard = 3; // VCK 
+
+    XIChangeHierarchy(dpy, (XIAnyHierarchyChangeInfo*)&remove, 1);
+    XFlush(dpy);
+*/
+
     }
 
     if (0) {
