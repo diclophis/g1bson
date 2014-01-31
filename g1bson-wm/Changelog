@@ -1,0 +1,301 @@
+22.03.2007
++ scan the pairings when new devices are connected, remember pairing in
+keyboard device.
++ set the device focus when clicking on a titlebar, finally be able to use
+multiple keyboards properly.
+o use new XSetClientPointer API.
+
+20.03.2007
+o Make dock buttons listen to device button presses.
+o Pair devices on button press on a keyboard in the dock.
+- remove Util class
+- remove old window decoration images
+
+16.03.2007
+o expand dock as new keyboards are plugged in.
+
+15.03.2007
++ add gitignore file.
+o change icons, use transparent background.
+o set root background image to white, prettyfies move/scale operations.
+o use cairo for buttons and titlebar.
+o interaction buttons are InputOnly now, painting is done for the whole
+window.
+o background window painted with cairo.
+o window size is bigger than client, to allow border around.
+o change cursor images to avoid transparency. too slow on my card.
++ add cursor_original.xcf in case we need to modify the cursors again.
+o Try a bit of optimizing on window resizes to make it slightly faster.
+o Update README file, with some more warnings.
++ add cursor hotplug handling, wrap cursor numbers at 10 so we don't run out
+of images.
++ add keyboard images for each connected keyboard to the dock. Currently
+inactive. 
+
+14.03.2007
+o use new access control for floor control, remove traces of MPGXlib. 
+o check for IsXExtensionPointer instead of for button classes.
+- remove hideCursor()
++ add fake device presence handling.
++ give each cursor a different shape, add cursor shapes 1 to 9
+o use cairo instead of Xlib drawing for the dock, use back buffer. 
+o use cairo for minimising, don't take screenshot.
+
+07.01.2007
+o changed back to using Xi
+
+06.12.2006
+TAG: MPWM_1_1
+
+05.12.2006
+o changed to use XCB and XCB-MPX
+
+26.10.2006
+TAG: MPWM_CSCW2006
+
+25.10.2006
+o bugfix in handleMapRequest. Failed to check for NULL values.
+o added --no-splash option to GIMP call. Moving the splash screen usually
+kills gimp.
++ additional debug statements for error handler on XGetWindowAttributes
+o changed logger file and makefile to disable logging on a make dist call
+
+TAG: MPWM_1_0_RC4
+
+24.10.2006
++ added install target to makefile
+o imagepath adjusted to /opt/MPX/share/mpwm rather than /opt/MPX/images
+o createpackage script adjusted for new paths 
+o fixed permissions with installed images (changed Makefile)
+o createpackage script adjusted to ignore object files
+
+TAG: MPWM_1_0_RC3
+
+NOTE: Tag moved to work on adjusted script as well.
+
+18.10.2006
+o fixed bug with overlapping annotations. A window raise causes the window
+list to change (for Z stacking), so events will always go to the frontmost
+annotation window.
+
+17.10.2006
+o fixed segfault upon client deletion during window resize and window move
+o Overlay has now correct size rather than being several pixels short in
+height.
++ added MalaMinya to dock
++ cursor shape is now a proper pointer. 
+
+TAG: MPWM_1_0_RC2
+
+10.10.2006
++ added ICCCM WM_DELETE_WINDOW to let a client destroy a window.
+
++ added dock background
+o fixed error with dock repainting when apps are un-minimized
+o adapted createpackage script to new tag names
+
+TAG: MPGWMPP_0_11
+TAG: MPWM_1_0_RC1
+
+NOTE: Release Candidate for MPWM 1.0. 
+Feature set should be fixed now, only expanding for CSCW demo needs.
+Tag names switch from MPGWMPP <version> to MPWM <version>
+
+09.10.2006
++ Support for minimizing windows.
++ DockItem class
+o DockApp is now subclass of DockItem, some methods shifted
++ DockProcess class for minimized processes
+o some memory cleanup for WMWindow (i.e. XFreeGC, free(img) changed to "delete
+img")
+o client destruction does not unmap windows, reduces number of segfaults
+o removed compiler warnings in FloorControl and Overlay
+
+NOTE: Windows do not get scaled properly in this version.
+
+o fixed scaling bug
++ added scaling overlay. When windows are scaled, client is unmapped and a
+white window is overlaid. Increases scaling speed.
+
+05.10.2006
++ added IMAGEPATH define to config.  
++ added make dist target to Makefile (changes imagepath to /opt/MPX/images)
+
++ added make dist call to createpackage.sh
+o changed mpwm-control file to remove libmagick++9 dependency. 
+
+TAG: MPGWMPP_0_10_1
+TAG: MPGWMPP_0_10_2
+
+04.10.2006
++ added a Dock with a few applications (firefox, abiword, terminal, etc.)
++ icons for the doc apps
+o cleanup in Util. Previous static declarations failed with some g++ versions.
+o changed createpackage script to autogenerate version number
+
+TAG: MPGWMPP_0_10
+
+03.10.2006
+o x error handler is installed now, should stop MPWM from exiting when unmap
+fails.
++ added XConn class, changed code to use XConn rather than passing
+dpy/screen/etc around.
+- cursor rendering code 
+
+TAG: MPGWMPP_0_9
+
+11.08.2006
++ added Manager::isWMDecoration() 
+o fixed a bug with unmap notifies, sometimes new windows didn't get closed.
+using isWMDecoration() fixes this.
+
+TAG: MPGWMPP_0_8_4
+
+11.07.2006
+o changed dependencies for mpwm package, libmagick++6c2 | libmagick++9c2a now
+
+
+05.07.2006
+o Bugfix in overlay. Devices have to go into PERM list instead of DENY list.
+
+after tag:
+o changed background image to MPX logo background.
+o changed createpackage.sh script to use version 0.8.3
+
+TAG: MPGWMPP_0_8_3
+
+03.07.2006
+o Version tag in control file is autofilled by createpackage.sh
+o Bugfix with overlay support. Devices have to go into deny lists instead of
+perm lists.
+o createpackages script creates source tarball now as well.
+o sync script syncs source tarball as well.
+
+TAG: MPGWMPP_0_8_2
+NOTE: This tag requires MPX 0.13.4 with the fixed deny ACL lists.
+
+22.06.06
+o memory leak fix in WMWindow. FloorControl object did not get deleted.
+o improved floor control handling. Clicking floor control button a second time
+disables window lock. Right click on the floor control gui removes the lock
+on a subwindow.
+
+TAG: MPGWMPP_0_8_1
+NOTE: This code requires MPGXlib-0-5-2 to handle ACL removals.
+
+23.06.06
+o Moved floor control code to use MPGXlib-0-5.
+o Altered makefile. Appname is now mpwm instead of mpgwm. Uses libmpx instead
+of libmpgx (as of MPGXlib-0-5-1)
++ Added createpackage.sh, sync.sh and mpwm-control to create debian packages
+from MPWM.
+
+21.06.06 
++ per-window floor control with the FloorControl class. Right-click on floor
+control button brings up wire-mesh model of client window, by clicking on a
+button this window is restricted to the given pointer device. 
+
+TAG: MPGWMPP_0_8
+NOTE: This tag requires MPGXlib-0-4.
+Floor control does not scale in the current model and needs rework. This tag
+is the final tag before the floor control redesign.
+
+16.06.06
+o Changed to using the root window as input window and floor control to limit
+the device.
+o added cvs tags to all source files
+
+15.06.06
+o Layers are colored in the user's colors now.
++ Right click on button erases overlay (one layer), rightclick drag on drawing
+area switches to eraser.
+
+TAG: MPWMPP_0_7
+
+14.06.06
++ rudimentary overlay support. 
++ added layers to overlay. Each device has its own layer can can switch it
+on/off on a button click.
+
+13.06.06
++ added boundary checks for window sizes, could cause BadValues.
+o state tracking (IsViewable, IsUnmapped, ...) was buggy, should be fixed now.
+- hideCursor code in comments. MPX co-exists with the system cursor now so
+  that should not be neccessary.
+
+12.03.06
++ added Util class. Designed for utility functions, currently holds the 
+image magick conversion functions.
+o Improved code to load background image. 
++ added images for titlebar, the buttons and the resize buttons plus the code
+to load the images and display them.
++ added btOwner button to indicate ownership of a window.
+o due to (presumably) race conditions the CLIENT_PID can be set by the client
+without the WM noticing. Added check for PID in all map window calls to ensure
+getting the PID if it exists.
+o moved Config::init() directly to where X is initialized.
+o moved all images to images folder
++ added RENDER_CURSOR defines. If defined, the WM will render cursors for the
+connected devices.
+
+TAG: MPGWMPP_0_6
+
+22.02.06
+o Fixed a bug that caused segfault. Destructor of WMWindow needs to remove
+the window from the process' window listthe process' window list
+
+21.02.06
++ added Process class. This class stores all windows that belong to a
+particular process and allows changing ownership of those windows.
+o renamed WMWindow::getPID() to WMWindow::extractPID().
+o fixed a bug by removing XSelectInput call from WMWWindow constructor. Caused
+Xlib errors due to restricted access.
+
+NOTE: These changes need the FORCE_PID Xlib hack.
+
+21.02.06
++ added background window color
+o resize bar position shifted one pixel down, was overlapping with client
+window before.
+
+TAG: MPGWMPP_0_5
+
+16.02.06
+o The XKillClient call in the destroy() function was wrong, we only want to
+destroy the window, not the client. Is fixed now.
++ shaped and coloured cursors
+
+TAG: MPGWMPP_0_4
+
+09.02.06
+o Moved configure request handling code to WMWindow. This is the correct place
+to put it.
++ added resize bar at bottom of window.
+- removed current resize bar functionality.
++ added resize buttons in window corners. 
+o internal states for positions didn't get updated with the WMWindow::move()
+call. Fixed now.
+
+TAG: MPGWMPP_0_3
+NOTE: This release supports two-handed resizing of windows.
+
+08.02.06
++ Warping the system pointer out of the way now until we find a way to
+intercept XSetCursor calls and set them on the window manager.
+o XGetAttributes in WMWindow() can fail if the window was destroyed before the
+call (i.e. firefox does that). An XSetErrorHandler catches this problem.
+
+TAG: MPGWMPP_0_2
+NOTE: Abiword and firefox are correctly displayed. More complex applications
+pending.
+
+06.02.06
++ Added mouse dragging.
++ Added button functionality. Closing and floor control should work now.
+
+03.02.06
+Initial checkin.
+MPGWM++ is the C++ of MPGWM. MPGWM was an extension of SWM and became slightly 
+unmaintainable with added features. The C++ version should get around this 
+problem. This is not yet a full version of MPGWM, some additional features need
+to be implemented and tested. 

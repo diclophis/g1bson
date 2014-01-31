@@ -1,0 +1,9 @@
+MPWM is the multi-pointer window manager, a MPX-aware window manager that
+supports window operations from multiple devices.
+
+MPWM is a proof-of-concept, not a real window manager. It's lacking most
+features that you'd expect from a window manager so don't use it in
+production. Or on your desktop. Or really anywhere.
+
+It's also unmaintained, I just keep it here because the source can be of
+value to someone.

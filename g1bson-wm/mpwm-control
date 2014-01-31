@@ -1,0 +1,16 @@
+Package: mpwm
+Version: VERSION
+Section: x11
+Priority: optional
+Architecture: i386
+Essential: no
+Depends: libc6 (>= 2.3.4-1), libgcc1 (>= 1:4.0.1), libx11-6, libmpx, libmagick++6c2
+Suggests: mpx
+Maintainer: Peter Hutterer <peter@cs.unisa.edu.au>
+Provides: mpwm
+Description: Multi-Pointer Window Manager (MPWM)
+        .
+        .
+        The MPWM is a window manager that makes use of the MPX extensions for
+        the X Server. It supports two-handed interactions and provides a GUI
+        to enable and disable floor control.
