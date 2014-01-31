@@ -1,27 +1,27 @@
-Multiple Cursor/Keyboard Hacking Sandbox
+# g1bson: MPX Pair Hacking env
 
-Key Technologies
+## Key Technologies
 
   * Multi-Cursor Window Manager: http://multicursor-wm.sourceforge.net/
   * Multi-Pointer X: http://en.wikipedia.org/wiki/Multi-Pointer_X
   * Xinput 2: http://www.x.org/wiki/guide/extensions/#index2h2
   * XQuartz: http://xquartz.macosforge.org/
 
-g1bson-vagrant
+## g1bson-vagrant
 
 Ubuntu 13.10 Linux test kitchen 
 
-g1bson-osx
+## g1bson-osx
 
 XCode project for application that bridges OSX mouse to X11
 
-g1bson-wm
+## g1bson-wm
 
 X11 Window Manager with extended multi-pointer support
 
     automake && autoconf && CXXFLAGS=-I/opt/X11/include\ -I/usr/local/include LDFLAGS=-L/opt/X11/lib LIBS=-lX11\ -lXi\ -lXtst\ -lXext\ -lXcursor\ -lcairo ./configure
 
-Research
+## Research
 
   * http://tronche.com/gui/x/xlib/display/opening.html
   * https://github.com/esjeon/xinput2-touch
