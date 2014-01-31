@@ -1,4 +1,4 @@
-Multiple Cursor Multiple Keyboard Hacking Sandbox
+Multiple Cursor/Keyboard Hacking Sandbox
 
 Key Technologies
 
@@ -6,7 +6,6 @@ Key Technologies
   * Multi-Pointer X: http://en.wikipedia.org/wiki/Multi-Pointer\_X
   * Xinput 2: http://www.x.org/wiki/guide/extensions/#index2h2
   * XQuartz: http://xquartz.macosforge.org/
-
 
 g1bson-vagrant
 
@@ -19,6 +18,8 @@ XCode project for application that bridges OSX mouse to X11
 g1bson-wm
 
 X11 Window Manager with extended multi-pointer support
+
+    automake && autoconf && CXXFLAGS=-I/opt/X11/include\ -I/usr/local/include LDFLAGS=-L/opt/X11/lib LIBS=-lX11\ -lXi\ -lXtst\ -lXext\ -lXcursor\ -lcairo ./configure
 
 Research
 
