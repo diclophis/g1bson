@@ -19,7 +19,7 @@ g1bson-wm
 
 X11 Window Manager with extended multi-pointer support
 
-    automake && autoconf && CXXFLAGS=-I/opt/X11/include\ -I/usr/local/include LDFLAGS=-L/opt/X11/lib LIBS=-lX11\ -lXi\ -lXtst\ -lXext\ -lXcursor\ -lcairo ./configure
+    autoreconf && PKG_CONFIG_PATH=/opt/X11/lib/pkgconfig CXXFLAGS=-I/opt/X11/include ./configure
 
 Research
 

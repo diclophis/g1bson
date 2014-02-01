@@ -13,3 +13,8 @@ src/Makefile
 Makefile
 images/Makefile
 configure
+
+Makefile.in
+aclocal.m4
+images/Makefile.in
+src/Makefile.in
