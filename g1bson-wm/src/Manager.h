@@ -14,7 +14,7 @@
 #include<stdio.h>
 #include "logger.h"
 #include "XConn.h"
-#include "Config.h"
+#include "GBConfig.h"
 #include "WMWindow.h"
 #include "PointerDevice.h"
 #include "KeyboardDevice.h"

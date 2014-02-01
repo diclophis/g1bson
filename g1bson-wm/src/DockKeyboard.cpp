@@ -1,7 +1,7 @@
 
 #include "DockKeyboard.h"
 #include "logger.h"
-#include "Config.h"
+#include "GBConfig.h"
 #include <cairo/cairo.h>
 #include <cairo/cairo-xlib.h>
 

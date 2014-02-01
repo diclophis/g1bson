@@ -8,8 +8,8 @@ mpwm_SOURCES = main.cpp \
                WMWindow.h \
                WMWindow.cpp \
                logger.h \
-               Config.cpp \
-               Config.h \
+               GBConfig.cpp \
+               GBConfig.h \
                ConfigurationError.h \
                DeviceError.cpp \
                DeviceError.h \

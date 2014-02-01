@@ -5,7 +5,6 @@ autom4te.cache/
 src/.deps/
 src/mpwm
 config.status
-config.h
 config.log
 stamp-h1
 

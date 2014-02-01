@@ -12,7 +12,7 @@
 #include<string>
 #include<sstream> 
 #include "DeviceError.h"
-#include "Config.h"
+#include "GBConfig.h"
 #include "logger.h"
 #include "WMWindow.h"
 #include "XConn.h"

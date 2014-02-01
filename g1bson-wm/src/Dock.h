@@ -6,7 +6,7 @@
 #include <vector>
 #include <cairo/cairo.h>
 #include "XConn.h"
-#include "Config.h"
+#include "GBConfig.h"
 #include "DockApp.h"
 #include "DockProcess.h"
 #include "DockKeyboard.h"

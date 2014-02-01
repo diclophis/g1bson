@@ -12,7 +12,7 @@
 #include<vector>
 #include<utility>
 #include "logger.h"
-#include "Config.h"
+#include "GBConfig.h"
 #include "Manager.h"
 #include "Process.h"
 #include "XConn.h"

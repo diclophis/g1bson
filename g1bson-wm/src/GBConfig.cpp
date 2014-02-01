@@ -3,7 +3,7 @@
 /*--
   --*/
 
-#include "Config.h"
+#include "GBConfig.h"
 
 Config* Config::instance = NULL;
 

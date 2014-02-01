@@ -91,10 +91,10 @@ CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
 am_mpwm_OBJECTS = main.$(OBJEXT) Manager.$(OBJEXT) WMWindow.$(OBJEXT) \
-	Config.$(OBJEXT) DeviceError.$(OBJEXT) PointerDevice.$(OBJEXT) \
-	Process.$(OBJEXT) XConn.$(OBJEXT) XError.$(OBJEXT) \
-	KeyboardDevice.$(OBJEXT) Dock.$(OBJEXT) DockApp.$(OBJEXT) \
-	DockProcess.$(OBJEXT) DockItem.$(OBJEXT) \
+	GBConfig.$(OBJEXT) DeviceError.$(OBJEXT) \
+	PointerDevice.$(OBJEXT) Process.$(OBJEXT) XConn.$(OBJEXT) \
+	XError.$(OBJEXT) KeyboardDevice.$(OBJEXT) Dock.$(OBJEXT) \
+	DockApp.$(OBJEXT) DockProcess.$(OBJEXT) DockItem.$(OBJEXT) \
 	DockKeyboard.$(OBJEXT)
 mpwm_OBJECTS = $(am_mpwm_OBJECTS)
 am__DEPENDENCIES_1 =
@@ -266,8 +266,8 @@ mpwm_SOURCES = main.cpp \
                WMWindow.h \
                WMWindow.cpp \
                logger.h \
-               Config.cpp \
-               Config.h \
+               GBConfig.cpp \
+               GBConfig.h \
                ConfigurationError.h \
                DeviceError.cpp \
                DeviceError.h \
@@ -380,13 +380,13 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Config.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/DeviceError.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Dock.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/DockApp.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/DockItem.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/DockKeyboard.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/DockProcess.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/GBConfig.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/KeyboardDevice.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Manager.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/PointerDevice.Po@am__quote@
