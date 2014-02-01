@@ -1,5 +1,5 @@
 bin_PROGRAMS = mpwm
-INCLUDES=-DIMAGEPATH=\"${datadir}/@PACKAGE@/\" -DXCURSORGEN=\"@XCURSORGEN@\"
+AM_CPPFLAGS=-DIMAGEPATH=\"${datadir}/@PACKAGE@/\" -DXCURSORGEN=\"@XCURSORGEN@\"
 mpwm_LDADD = $(MPWM_LIBS)
 
 mpwm_SOURCES = main.cpp \

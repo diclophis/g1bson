@@ -15,7 +15,7 @@ AC_CHECK_PROG([XCURSORGEN],[xcursorgen],[`which xcursorgen`])
 # XSetClientPointer is only in the MPX aware lib, so we're all good if it
 # exists.
 AC_CHECK_LIB([Xi], [XSetClientPointer]) 
-#PKG_CHECK_MODULES(MPWM, X Xext [Xi >= 1.2.9] Xcursor cairo [inputproto >= 1.9.99.8])
+PKG_CHECK_MODULES(MPWM, x11 xext [xi >= 1.2.9] xcursor cairo [inputproto >= 1.9.99.8])
 
 AC_SUBST(MPWM_LIBS)
 
