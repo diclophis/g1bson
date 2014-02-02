@@ -297,7 +297,6 @@ int id_master_kbd, int id_slave_kbd,
 int id_master_ptr, int id_slave_ptr
 ) {
 
-
   int code = XKeysymToKeycode (dsp, symbol);
 
   int dummy[1] = { 0 };
@@ -305,11 +304,9 @@ int id_master_ptr, int id_slave_ptr
   int current_pointer;
   XDevice *dev;
 
-  //dev = XOpenDevice (dsp,
-  //                   id_slave_kbd);
-
-
   if (0) {
+  dev = XOpenDevice (dsp,
+                     id_slave_kbd);
     printf("typing %d\n", window_id);
 
 
@@ -332,6 +329,8 @@ int id_master_ptr, int id_slave_ptr
     {
       printf ("Faking key event failed 2.\n");
     }
+  XCloseDevice (dsp,
+                dev);
     XFlush (dsp);
   }
 
@@ -379,9 +378,9 @@ int id_master_ptr, int id_slave_ptr
   //                    id_slave_ptr);
   printf("WTF!!!\n");
 
-  XSetInputFocus (dsp,
-                  (Window) window_id, PointerRoot,
-                  CurrentTime);
+  //XSetInputFocus (dsp,
+  //                (Window) window_id, PointerRoot,
+  //                CurrentTime);
       ///
 
       if (XIWarpPointer(dsp, id_master_ptr, None, None, 0, 0, 0, 0, 10, 10)) {
@@ -428,8 +427,6 @@ int id_master_ptr, int id_slave_ptr
   }
 
 
-  //XCloseDevice (dsp,
-  //              dev);
 
   XFlush (dsp);
 }
