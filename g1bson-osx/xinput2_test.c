@@ -244,6 +244,7 @@ void g1bson_add_mpx_for_window (
     }
 
     if (m) {
+      printf("%s %s\n", device->name, name);
         switch (device->use)
           {
           case XIMasterKeyboard:
@@ -291,12 +292,11 @@ void g1bson_drop_mpx (Display *dsp, int mpx) {
 
 
 void g1bson_fake_keystroke (
-Display *dsp, int window_id, char symbol,
-int xid_master_kbd, int xid_slave_kbd,
-int xid_master_ptr, int xid_slave_ptr
+Display *dsp, Screen *screen, int window_id, char symbol,
+int id_master_kbd, int id_slave_kbd,
+int id_master_ptr, int id_slave_ptr
 ) {
 
-  printf("typing %d\n", window_id);
 
   int code = XKeysymToKeycode (dsp, symbol);
 
@@ -305,48 +305,131 @@ int xid_master_ptr, int xid_slave_ptr
   int current_pointer;
   XDevice *dev;
 
-  dev = XOpenDevice (dsp,
-                     xid_slave_kbd);
+  //dev = XOpenDevice (dsp,
+  //                   id_slave_kbd);
 
-  XIGetClientPointer (dsp,
-                      None,
-                      &current_pointer);
 
-  XISetClientPointer (dsp,
-                      None,
-                      xid_master_ptr);
+  if (0) {
+    printf("typing %d\n", window_id);
+
+
+    if (XTestFakeDeviceKeyEvent (dsp,
+                                 dev,
+                                 code,
+                                 True,
+                                 dummy, 0, CurrentTime)==0)
+    {
+      printf ("Faking key event failed.\n");
+    }
+
+    XFlush (dsp);
+
+    if (XTestFakeDeviceKeyEvent (dsp,
+                                     dev,
+                                     code,
+                                     False,
+                                     dummy, 0, CurrentTime)==0)
+    {
+      printf ("Faking key event failed 2.\n");
+    }
+    XFlush (dsp);
+  }
+
+  int axis[2] = {480, 480};
+
+  int x=0;
+
+  sleep(1);
+
+  for (x=0; x<5; x++) {
+    axis[0] += (x * 10);
+
+    int src_x = 0;
+    int src_y = 0;
+    int src_width = 1024;
+    int src_height = 1024;
+
+    if (0) {
+      XWarpPointer(dsp, None, None, src_x, src_y, src_width, src_height, 10, 10);
+      //XFlush (dsp);
+      sleep(5);
+      printf("v1\n");
+      XPending(dsp);
+    }
+
+    if (0) {
+      int r = XTestFakeMotionEvent(dsp, -1, axis[0], axis[1], CurrentTime);
+      printf("moved: %d\n", r);
+      sleep(1);
+    }
+
+    if (1) {
+    ////
+  XDevice *mdev = XOpenDevice (dsp,
+                     id_slave_ptr);
+
+  printf("WTF 33333!!!\n");
+
+  //XIGetClientPointer (dsp,
+  //                    None,
+  //                    &current_pointer);
+
+  //XISetClientPointer (dsp,
+  //                    None,
+  //                    id_slave_ptr);
+  printf("WTF!!!\n");
 
   XSetInputFocus (dsp,
                   (Window) window_id, PointerRoot,
                   CurrentTime);
+      ///
 
-  if (XTestFakeDeviceKeyEvent (dsp,
-                               dev,
-                               code,
-                               True,
-                               dummy, 0, CurrentTime)==0)
-  {
-    printf ("Faking key event failed.\n");
-  }
+      if (XIWarpPointer(dsp, id_master_ptr, None, None, 0, 0, 0, 0, 10, 10)) {
+        printf("no mouse\n");
+      }
+      //XFlush (dsp);
+      printf("v2\n");
+      XPending(dsp);
+      sleep(1);
 
-  XFlush (dsp);
-
-  if (XTestFakeDeviceKeyEvent (dsp,
-                                   dev,
-                                   code,
-                                   False,
-                                   dummy, 0, CurrentTime)==0)
-  {
-    printf ("Faking key event failed 2.\n");
-  }
-  XFlush (dsp);
-
-  XISetClientPointer (dsp,
-                      None,
-                      current_pointer);
+      ////
+  //XISetClientPointer (dsp,
+  //                    None,
+  //                    current_pointer);
   
-  XCloseDevice (dsp,
-                dev);
+  //XCloseDevice (dsp,
+  //              mdev);
+      /////
+    }
+
+    /*
+
+    if (0) {
+      XDevice xdev = { id_master_ptr, 0, 0 };
+      XTestFakeDeviceMotionEvent( dsp, &xdev, False, 0, axis, 2, CurrentTime );
+      XTestFakeDeviceButtonEvent( dsp, &xdev, 1,  True, axis, 2, CurrentTime );
+      XTestFakeDeviceButtonEvent( dsp, &xdev, 1, False, axis, 2, CurrentTime );
+      sleep(1);
+    }
+
+    //If the extension is supported, XTestFakeMotionEvent requests the server to simulate a movement of the pointer to the specified position (x, y)
+    //on the root window of screen_number; otherwise, the request is ignored. If screen_number is -1, the current screen (that the pointer is on) is used.
+
+
+    if (0) {
+
+      if (XTestFakeDeviceMotionEvent(dsp, dev, False, 0, axis, 2, CurrentTime)) { //CurrentTime
+        printf("no MOUSE %d\n", id_slave_ptr);
+      }
+
+      //sleep(1);
+    }
+    */
+  }
+
+
+  //XCloseDevice (dsp,
+  //              dev);
 
   XFlush (dsp);
 }
@@ -362,11 +445,17 @@ void g1bson_search(Window w) {
   if(Success == XGetWindowProperty(_display, w, _atomPID, 0, 1, False, XA_CARDINAL,
                                    &type, &format, &nItems, &bytesAfter, &propPID))
   {
+    int pppid = 0;
+    //(*((unsigned long *)propPID));
     if(propPID != 0)
     {
+      pppid = ((*((unsigned long *)propPID)));
+      
+      if (pppid == 1708) {
 
-      printf("PID: %lu\n", (*((unsigned long *)propPID)));
-      proofWin = w;
+        printf("PID: %lu\n", (*((unsigned long *)propPID)));
+        proofWin = w;
+      }
 
       XFree(propPID);
     }
@@ -409,7 +498,7 @@ int main(int argc, char **argv) {
   Window win;
   XEvent ev;
 
-  dpy = XOpenDisplay("localhost:0");
+  dpy = XOpenDisplay(NULL);
 
   if (!dpy) {
     fprintf(stderr, "Failed to open display.\n");
@@ -430,7 +519,16 @@ int main(int argc, char **argv) {
         xid_master_ptr, xid_slave_ptr;
     int current_pointer;
 
-    g1bson_add_mpx_for_window (dpy, "test", // name must be uniq
+    char name[20];
+    srand(time(NULL));
+    int i;
+    for(i = 0; i < 20; i++){
+      name[i] = '0' + rand() % 10; // starting on '0', ending on '}'
+    }
+
+    name[19] = '\0';
+
+    g1bson_add_mpx_for_window (dpy, name, // name must be uniq
       &xid_master_kbd,
       &xid_slave_kbd,
       &xid_master_ptr,
@@ -441,7 +539,7 @@ int main(int argc, char **argv) {
 
     g1bson_windows_matching_pid(dpy, rootWindow, 0);
 
-    g1bson_fake_keystroke(dpy, proofWin, 'X', xid_master_kbd, xid_slave_kbd, xid_master_ptr, xid_slave_ptr);
+    g1bson_fake_keystroke(dpy, screen, proofWin, 'X', xid_master_kbd, xid_slave_kbd, xid_master_ptr, xid_slave_ptr);
 
     g1bson_drop_mpx(dpy, xid_master_kbd);
 
