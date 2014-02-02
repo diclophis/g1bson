@@ -185,7 +185,6 @@ void g1bson_create_remove_master(Display *dpy, int xi_opcode) {
       XFreeEventData(dpy, cookie);
   }
 
-
   printf("Removing new master devices again.\n");
 
   remove.type = XIRemoveMaster;
@@ -363,70 +362,17 @@ int id_master_ptr, int id_slave_ptr
     }
 
     if (1) {
-    ////
-  XDevice *mdev = XOpenDevice (dsp,
-                     id_slave_ptr);
-
-  printf("WTF 33333!!!\n");
-
-  //XIGetClientPointer (dsp,
-  //                    None,
-  //                    &current_pointer);
-
-  //XISetClientPointer (dsp,
-  //                    None,
-  //                    id_slave_ptr);
-  printf("WTF!!!\n");
-
-  //XSetInputFocus (dsp,
-  //                (Window) window_id, PointerRoot,
-  //                CurrentTime);
-      ///
-
+      //XDevice *mdev = XOpenDevice (dsp,
+      //                   id_slave_ptr);
       if (XIWarpPointer(dsp, id_master_ptr, None, None, 0, 0, 0, 0, 10, 10)) {
         printf("no mouse\n");
       }
-      //XFlush (dsp);
-      printf("v2\n");
       XPending(dsp);
       sleep(1);
-
-      ////
-  //XISetClientPointer (dsp,
-  //                    None,
-  //                    current_pointer);
-  
-  //XCloseDevice (dsp,
-  //              mdev);
-      /////
+      //XCloseDevice (dsp,
+      //              mdev);
     }
-
-    /*
-
-    if (0) {
-      XDevice xdev = { id_master_ptr, 0, 0 };
-      XTestFakeDeviceMotionEvent( dsp, &xdev, False, 0, axis, 2, CurrentTime );
-      XTestFakeDeviceButtonEvent( dsp, &xdev, 1,  True, axis, 2, CurrentTime );
-      XTestFakeDeviceButtonEvent( dsp, &xdev, 1, False, axis, 2, CurrentTime );
-      sleep(1);
-    }
-
-    //If the extension is supported, XTestFakeMotionEvent requests the server to simulate a movement of the pointer to the specified position (x, y)
-    //on the root window of screen_number; otherwise, the request is ignored. If screen_number is -1, the current screen (that the pointer is on) is used.
-
-
-    if (0) {
-
-      if (XTestFakeDeviceMotionEvent(dsp, dev, False, 0, axis, 2, CurrentTime)) { //CurrentTime
-        printf("no MOUSE %d\n", id_slave_ptr);
-      }
-
-      //sleep(1);
-    }
-    */
   }
-
-
 
   XFlush (dsp);
 }
