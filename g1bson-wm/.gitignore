@@ -18,3 +18,7 @@ Makefile.in
 aclocal.m4
 images/Makefile.in
 src/Makefile.in
+
+depcomp
+install-sh
+missing
