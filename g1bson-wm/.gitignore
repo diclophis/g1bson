@@ -12,7 +12,6 @@ config.h
 src/Makefile
 Makefile
 images/Makefile
-configure
 
 Makefile.in
 aclocal.m4
