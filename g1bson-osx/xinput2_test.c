@@ -485,7 +485,6 @@ int main(int argc, char **argv) {
     g1bson_fake_keystroke(dpy, screen, proofWin, 'X', xid_master_kbd, xid_slave_kbd, xid_master_ptr, xid_slave_ptr);
 
     g1bson_drop_mpx(dpy, xid_master_kbd);
-
   }
 
   if (0) {
