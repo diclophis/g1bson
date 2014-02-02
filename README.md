@@ -19,7 +19,11 @@ XCode project for application that bridges OSX mouse to X11
 
 X11 Window Manager with extended multi-pointer support
 
-    autoreconf && PKG_CONFIG_PATH=/opt/X11/lib/pkgconfig CXXFLAGS=-I/opt/X11/include ./configure
+    # OSX
+    aclocal && automake --add-missing && autoconf && PKG_CONFIG_PATH=/opt/X11/lib/pkgconfig CXXFLAGS=-I/opt/X11/include ./configure
+
+    # Linux
+    aclocal && automake --add-missing && autoconf && ./configure
 
 ## Research
 
