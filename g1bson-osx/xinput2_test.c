@@ -303,7 +303,7 @@ int id_master_ptr, int id_slave_ptr
   int current_pointer;
   XDevice *dev;
 
-  if (0) {
+  if (1) {
   dev = XOpenDevice (dsp,
                      id_slave_kbd);
     printf("typing %d\n", window_id);
@@ -364,7 +364,7 @@ int id_master_ptr, int id_slave_ptr
     if (1) {
       //XDevice *mdev = XOpenDevice (dsp,
       //                   id_slave_ptr);
-      if (XIWarpPointer(dsp, id_master_ptr, None, None, 0, 0, 0, 0, 10, 10)) {
+      if (XIWarpPointer(dsp, id_master_ptr, None, None, 0, 0, 0, 0, 10, 40)) {
         printf("no mouse\n");
       }
       XPending(dsp);
