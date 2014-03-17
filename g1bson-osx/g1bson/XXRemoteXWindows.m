@@ -2,7 +2,7 @@
 //  XXRemoteXWindows.m
 //  osx2x
 //
-// Copyright (c) Michael Dales 2002, 2003
+// Copyright (c) Michael Dales 2002, 2003, Jon Bardin 2014
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -40,58 +40,58 @@
 
 // This is used when waiting for a copy event from the X side, both as a way of knowing
 // who last asked for the X Selection and as a semaphor to stop multiple requests
-static XXRemoteXWindows* lastToCopy = nil;
-
-void XXCopyCallback(char* data)
-{
-   [lastToCopy copyCallBack: data];
-}
+//static XXRemoteXWindows* lastToCopy = nil;
+//
+//void XXCopyCallback(char* data)
+//{
+//   [lastToCopy copyCallBack: data];
+//}
 
 
 @implementation XXRemoteXWindows
 
-- initWithHostName: (NSString*)hostname
-{
+
+-initWithHostName: (NSString*)hostname {
 	return [self initWithHostName:hostname cursor_id:1];
 }
 
 
-- initWithHostName: (NSString*)hostname cursor_id:(int)c_id {
-    if (self = [super init])
+-initWithHostName:(NSString*)hostname cursor_id:(int)c_id {
+  
+  if (self = [super init]) {
+  
+    int fd;
+    printf("cursor is %d\n", c_id);
+    cursor_no  = c_id;
+
+    display = XOpenDisplay((char*)[hostname cStringUsingEncoding:NSUTF8StringEncoding]);
+
+    if (display == NULL)
     {
-      /*
-        int fd;
-		printf("cursor is %d\n", c_id);
-        cursor_no  = c_id;
-        // Open the dislay to the 
-        display = XXConnectDisplay((char*)[hostname cString]);
-
-        if (display == NULL)
-        {
-            // Failed to open the connection, so fail to create the object
-            NSLog(@"Failed to open connection to the X Server");
-            [self release];
-            return nil;
-        }
-
-        // Get the file descriptor of the X connection, and then set up
-        // a handler to watch for activity on it.
-        fd = XXGetConnectionFD(display);
-
-        // If we get this far then the socket has been created, so we wrap it up
-        sock = [[NSFileHandle alloc] initWithFileDescriptor: fd
-                                             closeOnDealloc: NO];
-        
-        // Register ourselves for notifications
-        [[NSNotificationCenter defaultCenter] addObserver: self
-                                                 selector: @selector(readNotify:)
-                                                     name: NSFileHandleDataAvailableNotification
-                                                   object: sock];
-        [sock waitForDataInBackgroundAndNotify];
-*/
+      // Failed to open the connection, so fail to create the object
+      NSLog(@"Failed to open connection to the X Server");
+      return nil;
     }
 
-    return self;
+    
+    // Get the file descriptor of the X connection, and then set up
+    // a handler to watch for activity on it.
+    fd = XConnectionNumber(display);
+
+    // If we get this far then the socket has been created, so we wrap it up
+    sock = [[NSFileHandle alloc] initWithFileDescriptor: fd
+                                         closeOnDealloc: NO];
+
+    // Register ourselves for notifications
+    [[NSNotificationCenter defaultCenter] addObserver: self
+                                             selector: @selector(readNotify:)
+                                                 name: NSFileHandleDataAvailableNotification
+                                               object: sock];
+    
+    [sock waitForDataInBackgroundAndNotify];
+  }
+
+  return self;
 }
 
 /*------------------------------------------------------------------------------
@@ -99,6 +99,8 @@ void XXCopyCallback(char* data)
  */
 - (void)readNotify: (NSNotification*)aNotification
 {
+  
+  NSLog(@"Events in the queue: %d", XQLength(display));
   /*
     if (XXEventHandler(display) == -1)
     {
@@ -110,8 +112,8 @@ void XXCopyCallback(char* data)
     }
 
     // Tell the handler to notify us on data arriving
-    [sock waitForDataInBackgroundAndNotify];
    */
+  [sock waitForDataInBackgroundAndNotify];
 }
 
 
@@ -122,19 +124,16 @@ void XXCopyCallback(char* data)
 {
   NSRect r;
 
-  /*
-    XXSize size;
+  Screen *s = XDefaultScreenOfDisplay(display);
 
-    r.origin.x = 0.0;
-    r.origin.y = 0.0;
 
-    size = XXGetDisplaySize(display);
+  r.origin.x = 0.0;
+  r.origin.y = 0.0;
 
-    r.size.width = (float)size.width;
-    r.size.height = (float)size.height;
 
-    return r;
-   */
+  r.size.width = s->width;
+  r.size.height = s->height;
+  
   return r;
 }
 
@@ -144,6 +143,7 @@ void XXCopyCallback(char* data)
  */
 - (void)moveCursorRelative: (NSPoint)position
 {
+  NSLog(@"moveCursorRelative");
   /*
     if (XXSendRelativeMotionEvent(display, (int)position.x, (int)position.y, cursor_no) == -1)
     {
@@ -161,6 +161,8 @@ void XXCopyCallback(char* data)
  */
 - (void)moveCursorAbsolute: (NSPoint)position
 {
+  NSLog(@"moveCursorAbsolute");
+
   /*
     if (XXSendAbsoluteMouseLocation(display, (int)position.x, (int)position.y, cursor_no) == -1)
     {
@@ -179,6 +181,8 @@ void XXCopyCallback(char* data)
 - (void)sendKeyPress: (int)keycode
          inDirection: (enum XXDIRECTION)direction
 {
+  NSLog(@"sendKeyPress");
+
   /*
     int dir;
 
@@ -209,6 +213,8 @@ void XXCopyCallback(char* data)
 - (void)sendMousePress: (int)button
            inDirection: (enum XXDIRECTION)direction
 {
+  NSLog(@"sendMousePress");
+
   /*
     int dir;
 
@@ -323,9 +329,8 @@ void XXCopyCallback(char* data)
  */
 - (void)disconnect
 {
-  /*
     [[NSNotificationCenter defaultCenter] removeObserver: self];
-    
+  /*
     XXDisconnectDisplay(display);
     display = NULL;
 

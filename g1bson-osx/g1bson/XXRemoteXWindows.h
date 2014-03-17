@@ -37,9 +37,16 @@
 #import "XXAbstractRemote.h"
 //#import "xcode.h"
 
+#include <X11/Xlib.h>
+#include <X11/extensions/XInput2.h>
+#include <X11/keysym.h>
+#include <X11/extensions/XI2.h>
+#include <X11/extensions/XInput.h>
+#include <X11/Xatom.h>
+
 @interface XXRemoteXWindows : NSObject <XXAbstractRemote>
 {
-    int			*display;
+    Display			*display;
     NSFileHandle	*sock;
 	int				cursor_no; // ds - added cursor field
 }

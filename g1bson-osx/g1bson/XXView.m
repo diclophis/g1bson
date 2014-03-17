@@ -424,21 +424,24 @@
  * mouseMoved - If this gets called then we are tracking mouse movement (else
  *              mouse movement events are not monitored due to expense).
  */
-- (void)mouseMoved:(NSEvent *)theEvent
-{
-  /*
-    CGMouseDelta x, y;
-    
-    // Moved here to remove the coordinates from teh queue, required under Panther
-    CGGetLastMouseDelta(&x, &y);
-    
+- (void)mouseMoved:(NSEvent *)theEvent {
+  //NSLog(@"wtf: %@ %f %f", theEvent, theEvent.deltaX, theEvent.deltaY);
+  
+  int x = (int)theEvent.deltaX;
+  int y = (int)theEvent.deltaY;
+
+//CGMouseDelta x, y;
+//
+//// Moved here to remove the coordinates from teh queue, required under Panther
+//CGGetLastMouseDelta(&x, &y);
+
     if (locked && !justLocked)
     {
         NSPoint p;
         
         CGWarpMouseCursorPosition(lockPos);
 
-        //NSLog(@"Mouse delta = (%d, %d)\n", x, y);
+        NSLog(@"Mouse delta = (%d, %d)\n", x, y);
                 
         if (isRelative)
         {
@@ -464,9 +467,9 @@
                 {
                     // the cursor is off the
                     //[NSApp hide: nil];
-                    [controller toggleLock: nil];
-                    [controller promoteFrontApp];
-					//NSLog(@"blah\n");
+                    //[controller toggleLock: nil];
+                    //[controller promoteFrontApp];
+                    //NSLog(@"blah\n");
                 }
                 if (cursorPos.x < 0)
                     cursorPos.x = 0;
@@ -485,8 +488,8 @@
                     // the cursor is off the
                     //[NSApp hide: nil];
                     //[NSApp deactivate];
-                    [controller toggleLock: nil];
-                    [controller promoteFrontApp];
+                    //[controller toggleLock: nil];
+                    //[controller promoteFrontApp];
                 }
                 if (cursorPos.x > screenSize.size.width)
                     cursorPos.x = screenSize.size.width;
@@ -501,8 +504,8 @@
             {
                 if (cursorPos.y < 0)
                 {
-                    [controller toggleLock: nil];
-                    [controller promoteFrontApp];
+                    //[controller toggleLock: nil];
+                    //[controller promoteFrontApp];
                 }
                 if (cursorPos.y > screenSize.size.height)
                     cursorPos.y = screenSize.size.height;
@@ -515,8 +518,8 @@
             {
                 if (cursorPos.y > screenSize.size.height)
                 {
-                    [controller toggleLock: nil];
-                    [controller promoteFrontApp];
+                    //[controller toggleLock: nil];
+                    //[controller promoteFrontApp];
                 }
                 if (cursorPos.y < 0)
                     cursorPos.y = 0;
@@ -534,7 +537,7 @@
         }
     }
     justLocked = FALSE;
-   */
+  
 }
 
 
@@ -875,7 +878,6 @@
         [self criticalDisconnect];
     NS_ENDHANDLER
 }
-
 
 
 @end

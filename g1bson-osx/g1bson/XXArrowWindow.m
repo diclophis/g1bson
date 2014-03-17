@@ -11,6 +11,10 @@
 
 @implementation XXArrowWindow
 
+//-showWindow:(id)controller {
+//  [super showWindow:controller];
+//}
+
 -(BOOL)canBecomeKeyWindow
 {
 	return YES;

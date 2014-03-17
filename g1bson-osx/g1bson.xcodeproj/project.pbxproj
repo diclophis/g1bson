@@ -24,6 +24,9 @@
 		C200CD6D189F7B24002E0191 /* XXArrowWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = C200CD68189F7B24002E0191 /* XXArrowWindow.m */; };
 		C200CD6E189F7B24002E0191 /* XXArrowView.m in Sources */ = {isa = PBXBuildFile; fileRef = C200CD6A189F7B24002E0191 /* XXArrowView.m */; };
 		C200CD71189F7B78002E0191 /* XXView.m in Sources */ = {isa = PBXBuildFile; fileRef = C200CD6F189F7B78002E0191 /* XXView.m */; };
+		C211818B18D62FC100CFC55F /* libX11.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C211818A18D62FC100CFC55F /* libX11.dylib */; };
+		C211818D18D6307500CFC55F /* libXi.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C211818C18D6307500CFC55F /* libXi.dylib */; };
+		C211818F18D6308700CFC55F /* libXtst.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C211818E18D6308700CFC55F /* libXtst.dylib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -70,6 +73,9 @@
 		C200CD70189F7B78002E0191 /* XXView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XXView.h; sourceTree = "<group>"; };
 		C200CD72189F7B99002E0191 /* XXAbstractRemote.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XXAbstractRemote.h; sourceTree = "<group>"; };
 		C200CD73189F7F03002E0191 /* GBController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBController.h; sourceTree = "<group>"; };
+		C211818A18D62FC100CFC55F /* libX11.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libX11.dylib; path = ../../../../opt/X11/lib/libX11.dylib; sourceTree = "<group>"; };
+		C211818C18D6307500CFC55F /* libXi.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libXi.dylib; path = ../../../../opt/X11/lib/libXi.dylib; sourceTree = "<group>"; };
+		C211818E18D6308700CFC55F /* libXtst.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libXtst.dylib; path = ../../../../opt/X11/lib/libXtst.dylib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,7 +83,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C211818F18D6308700CFC55F /* libXtst.dylib in Frameworks */,
 				C200CD2F189F765D002E0191 /* Cocoa.framework in Frameworks */,
+				C211818B18D62FC100CFC55F /* libX11.dylib in Frameworks */,
+				C211818D18D6307500CFC55F /* libXi.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -115,6 +124,9 @@
 		C200CD2D189F765D002E0191 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C211818E18D6308700CFC55F /* libXtst.dylib */,
+				C211818C18D6307500CFC55F /* libXi.dylib */,
+				C211818A18D62FC100CFC55F /* libX11.dylib */,
 				C200CD2E189F765D002E0191 /* Cocoa.framework */,
 				C200CD4D189F765D002E0191 /* XCTest.framework */,
 				C200CD30189F765D002E0191 /* Other Frameworks */,
@@ -353,12 +365,22 @@
 		C200CD24189F759A002E0191 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					/opt/X11/include,
+				);
 			};
 			name = Debug;
 		};
 		C200CD25189F759A002E0191 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					/opt/X11/include,
+				);
 			};
 			name = Release;
 		};
@@ -398,6 +420,10 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = "g1bson/g1bson-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/opt/X11/lib,
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -437,6 +463,10 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = "g1bson/g1bson-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/opt/X11/lib,
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
@@ -555,6 +585,7 @@
 				C200CD5C189F765D002E0191 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
 		};
 		C200CD5D189F765D002E0191 /* Build configuration list for PBXNativeTarget "g1bsonTests" */ = {
 			isa = XCConfigurationList;
@@ -563,6 +594,7 @@
 				C200CD5F189F765D002E0191 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
 	};

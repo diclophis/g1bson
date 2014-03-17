@@ -8,8 +8,11 @@
 
 #import <Cocoa/Cocoa.h>
 #import "GBController.h"
+#import "XXConnection.h"
 
-@interface GBAppDelegate : NSObject <NSApplicationDelegate, GBController>
+@interface GBAppDelegate : NSObject <NSApplicationDelegate, GBController> {
+  XXConnection *conn;
+}
 
 @property (assign) IBOutlet NSWindow *window;
 

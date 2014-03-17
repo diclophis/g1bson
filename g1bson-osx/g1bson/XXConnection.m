@@ -367,8 +367,9 @@ forController: (id<GBController> )cont
  */
 - (void)mouseEntered: (NSEvent*) theEvent
 {
-    //[controller setActiveController: self];
-    [controlWindow orderFrontRegardless];
+  NSLog(@"got mouse");
+  [controller setActiveController: self];
+  [controlWindow orderFrontRegardless];
 }
 
 - (void)mouseExited: (NSEvent*) theEvent
@@ -442,7 +443,7 @@ forController: (id<GBController> )cont
 	if (vis)
 	{
 		[arrowWin makeKeyAndOrderFront: nil];    
-		//NSLog(@"Showing arrow\n");
+		NSLog(@"Showing arrow\n");
 	}
 	else
 	{
@@ -454,6 +455,14 @@ forController: (id<GBController> )cont
 -(id)getArrowView
 {
 	return arrowView;
+}
+
+-(id)arrowWin {
+  return arrowWin;
+}
+
+-(id)controlWin {
+  return controlWindow;
 }
 
 

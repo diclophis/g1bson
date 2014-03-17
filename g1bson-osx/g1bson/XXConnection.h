@@ -89,4 +89,7 @@ forController: (id<GBController>)cont;
 
 -(void)disconnect;
 
+-(id)arrowWin;
+-(id)controlWin;
+
 @end
