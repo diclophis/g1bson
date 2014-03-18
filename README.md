@@ -42,4 +42,12 @@ X11 Window Manager with extended multi-pointer support
   * http://www.x.org/wiki/Development/Documentation/XorgInputHOWTO/
   * http://www.x.org/releases/X11R7.6/doc/inputproto/XI2proto.txt
   * http://en.wikipedia.org/wiki/X.Org_Server
+  * http://linux.die.net/man/3/rootwindowofscreen
+  * http://tronche.com/gui/x/xlib/window-information/XQueryTree.html
+  * http://tronche.com/gui/x/xlib/display/display-macros.html
+  * https://developer.apple.com/library/mac/documentation/cocoa/Reference/ApplicationKit/Classes/NSEvent_Class/Reference/Reference.html#//apple_ref/occ/instm/NSEvent/deltaX
+  * http://src.gnu-darwin.org/ports/games/tenebrae/work/tenebrae_0/macosx/in_osx.m
+  * http://lapcatsoftware.com/blog/2007/05/16/working-without-a-nib-part-1/
+  * http://stackoverflow.com/questions/6388219/creating-nsapplication-in-cocoa
+  * http://stackoverflow.com/questions/1829706/how-to-query-x11-display-resolution
 
