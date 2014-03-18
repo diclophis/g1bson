@@ -49,6 +49,14 @@
     Display			*display;
     NSFileHandle	*sock;
 	int				cursor_no; // ds - added cursor field
+  
+  int xid_master_kbd, xid_slave_kbd,
+  xid_master_ptr, xid_slave_ptr;
+  int current_pointer;
+  char name[20];
+  Screen *screen;
+  Window rootWindow;
+  Window proofWindow;
 }
 
 - initWithHostName: (NSString*)hostname;

@@ -27,6 +27,7 @@
 		C211818B18D62FC100CFC55F /* libX11.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C211818A18D62FC100CFC55F /* libX11.dylib */; };
 		C211818D18D6307500CFC55F /* libXi.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C211818C18D6307500CFC55F /* libXi.dylib */; };
 		C211818F18D6308700CFC55F /* libXtst.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C211818E18D6308700CFC55F /* libXtst.dylib */; };
+		C211819618D80A4100CFC55F /* g1bson.c in Sources */ = {isa = PBXBuildFile; fileRef = C211819418D80A4100CFC55F /* g1bson.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -76,6 +77,8 @@
 		C211818A18D62FC100CFC55F /* libX11.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libX11.dylib; path = ../../../../opt/X11/lib/libX11.dylib; sourceTree = "<group>"; };
 		C211818C18D6307500CFC55F /* libXi.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libXi.dylib; path = ../../../../opt/X11/lib/libXi.dylib; sourceTree = "<group>"; };
 		C211818E18D6308700CFC55F /* libXtst.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libXtst.dylib; path = ../../../../opt/X11/lib/libXtst.dylib; sourceTree = "<group>"; };
+		C211819418D80A4100CFC55F /* g1bson.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = g1bson.c; path = ../libg1bson/g1bson.c; sourceTree = "<group>"; };
+		C211819518D80A4100CFC55F /* g1bson.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = g1bson.h; path = ../libg1bson/g1bson.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -105,6 +108,7 @@
 		C200CD1F189F759A002E0191 = {
 			isa = PBXGroup;
 			children = (
+				C211819018D8094800CFC55F /* libg1bson */,
 				C200CD34189F765D002E0191 /* g1bson */,
 				C200CD52189F765D002E0191 /* g1bsonTests */,
 				C200CD2D189F765D002E0191 /* Frameworks */,
@@ -147,25 +151,25 @@
 		C200CD34189F765D002E0191 /* g1bson */ = {
 			isa = PBXGroup;
 			children = (
-				C200CD73189F7F03002E0191 /* GBController.h */,
-				C200CD72189F7B99002E0191 /* XXAbstractRemote.h */,
-				C200CD6F189F7B78002E0191 /* XXView.m */,
-				C200CD70189F7B78002E0191 /* XXView.h */,
-				C200CD66189F7B24002E0191 /* XXRemoteXWindows.m */,
-				C200CD67189F7B24002E0191 /* XXRemoteXWindows.h */,
-				C200CD68189F7B24002E0191 /* XXArrowWindow.m */,
-				C200CD69189F7B24002E0191 /* XXArrowWindow.h */,
-				C200CD6A189F7B24002E0191 /* XXArrowView.m */,
-				C200CD6B189F7B24002E0191 /* XXArrowView.h */,
-				C200CD63189F7AD1002E0191 /* XXTransparentWin.m */,
-				C200CD64189F7AD1002E0191 /* XXTransparentWin.h */,
-				C200CD60189F7A45002E0191 /* XXConnection.m */,
-				C200CD61189F7A45002E0191 /* XXConnection.h */,
 				C200CD40189F765D002E0191 /* GBAppDelegate.h */,
 				C200CD41189F765D002E0191 /* GBAppDelegate.m */,
-				C200CD43189F765D002E0191 /* MainMenu.xib */,
+				C200CD73189F7F03002E0191 /* GBController.h */,
 				C200CD46189F765D002E0191 /* Images.xcassets */,
+				C200CD43189F765D002E0191 /* MainMenu.xib */,
 				C200CD35189F765D002E0191 /* Supporting Files */,
+				C200CD72189F7B99002E0191 /* XXAbstractRemote.h */,
+				C200CD6B189F7B24002E0191 /* XXArrowView.h */,
+				C200CD6A189F7B24002E0191 /* XXArrowView.m */,
+				C200CD69189F7B24002E0191 /* XXArrowWindow.h */,
+				C200CD68189F7B24002E0191 /* XXArrowWindow.m */,
+				C200CD61189F7A45002E0191 /* XXConnection.h */,
+				C200CD60189F7A45002E0191 /* XXConnection.m */,
+				C200CD67189F7B24002E0191 /* XXRemoteXWindows.h */,
+				C200CD66189F7B24002E0191 /* XXRemoteXWindows.m */,
+				C200CD64189F7AD1002E0191 /* XXTransparentWin.h */,
+				C200CD63189F7AD1002E0191 /* XXTransparentWin.m */,
+				C200CD70189F7B78002E0191 /* XXView.h */,
+				C200CD6F189F7B78002E0191 /* XXView.m */,
 			);
 			path = g1bson;
 			sourceTree = "<group>";
@@ -198,6 +202,15 @@
 				C200CD55189F765D002E0191 /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		C211819018D8094800CFC55F /* libg1bson */ = {
+			isa = PBXGroup;
+			children = (
+				C211819418D80A4100CFC55F /* g1bson.c */,
+				C211819518D80A4100CFC55F /* g1bson.h */,
+			);
+			name = libg1bson;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -300,6 +313,7 @@
 				C200CD6E189F7B24002E0191 /* XXArrowView.m in Sources */,
 				C200CD3B189F765D002E0191 /* main.m in Sources */,
 				C200CD65189F7AD1002E0191 /* XXTransparentWin.m in Sources */,
+				C211819618D80A4100CFC55F /* g1bson.c in Sources */,
 				C200CD62189F7A45002E0191 /* XXConnection.m in Sources */,
 				C200CD42189F765D002E0191 /* GBAppDelegate.m in Sources */,
 				C200CD6C189F7B24002E0191 /* XXRemoteXWindows.m in Sources */,

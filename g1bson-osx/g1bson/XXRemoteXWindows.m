@@ -35,6 +35,8 @@
 
 
 #import "XXRemoteXWindows.h"
+#import "g1bson.h"
+
 //#import "XXController.h"
 //#import "keymap.h"
 
@@ -73,6 +75,25 @@
       return nil;
     }
 
+    {
+      screen = DefaultScreenOfDisplay(display);
+      rootWindow = RootWindowOfScreen(screen);
+      proofWindow = g1bson_search(display, rootWindow);
+      
+      {
+        srand((int)time(NULL));
+        int i;
+        for(i = 0; i < 20; i++){
+          name[i] = '0' + rand() % 10;
+        }
+        name[19] = '\0';
+        g1bson_add_mpx_for_window (display, name, // name must be uniq
+                                   &xid_master_kbd,
+                                   &xid_slave_kbd,
+                                   &xid_master_ptr,
+                                   &xid_slave_ptr);
+      }
+    }
     
     // Get the file descriptor of the X connection, and then set up
     // a handler to watch for activity on it.
@@ -161,7 +182,9 @@
  */
 - (void)moveCursorAbsolute: (NSPoint)position
 {
-  NSLog(@"moveCursorAbsolute");
+  NSLog(@"moveCursorAbsolute %f %f", position.x, position.y);
+  
+  g1bson_fake_mouse(display, xid_master_ptr, position.x, position.y);
 
   /*
     if (XXSendAbsoluteMouseLocation(display, (int)position.x, (int)position.y, cursor_no) == -1)
@@ -181,29 +204,33 @@
 - (void)sendKeyPress: (int)keycode
          inDirection: (enum XXDIRECTION)direction
 {
-  NSLog(@"sendKeyPress");
+  //NSLog(@"sendKeyPress");
+  
+  int dir;
 
+  dir = (direction == XD_DOWN) ? TRUE : FALSE;
+  
+  //NSLog(@"%d\n", keycode);
+  
+  g1bson_fake_keystroke(display, screen, proofWindow, 'X', xid_master_kbd, xid_slave_kbd, xid_master_ptr, xid_slave_ptr);
+
+  
   /*
-    int dir;
+  if (keymap[keycode] == -1)
+      return;
 
-    dir = (direction == XD_DOWN) ? TRUE : FALSE;
-    
-    //NSLog(@"%d %d\n", keycode, keymap[keycode]);
-    
-    if (keymap[keycode] == -1)
-        return;
-
-    if ((keycode >= 0) && (keycode < 128))
-    {
-        if (XXSendKeyEvent(display, keymap[keycode], dir, cursor_no) == -1)
-        {
-            NSException* myException = [NSException exceptionWithName: @"ConnectionLost"
-                                                               reason: @"Failed To Send Key"
-                                                             userInfo: nil];
-            [myException raise];
-        }
-    }
-   */
+  if ((keycode >= 0) && (keycode < 128))
+  {
+      if (XXSendKeyEvent(display, keymap[keycode], dir, cursor_no) == -1)
+      {
+          NSException* myException = [NSException exceptionWithName: @"ConnectionLost"
+                                                             reason: @"Failed To Send Key"
+                                                           userInfo: nil];
+          [myException raise];
+      }
+  }
+  */
+  
 }
 
 
@@ -337,20 +364,6 @@
     [sock release];
     sock = nil;
    */
-}
-
-
-/*------------------------------------------------------------------------------
- * dealloc - make sure that we have disconnected
- */
-- (void)dealloc
-{
-  /*
-    if (display != NULL)
-        [self disconnect];
-*/
-  
-    //[super dealloc];
 }
 
 

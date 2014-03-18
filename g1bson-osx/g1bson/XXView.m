@@ -437,12 +437,14 @@
 
     if (locked && !justLocked)
     {
-        NSPoint p;
-        
-        CGWarpMouseCursorPosition(lockPos);
+      NSPoint p, p2;
+      
+      CGWarpMouseCursorPosition(lockPos);
 
-        NSLog(@"Mouse delta = (%d, %d)\n", x, y);
-                
+      NSLog(@"Mouse delta = (%d, %d)\n", x, y);
+      
+      p2 = NSMakePoint(x, y);
+      
         if (isRelative)
         {
             NS_DURING
@@ -530,7 +532,7 @@
                     cursorPos.x = screenSize.size.width;
             }
             NS_DURING
-                [remote moveCursorAbsolute: cursorPos];
+                [remote moveCursorAbsolute: p2];
             NS_HANDLER
                 [self criticalDisconnect];
             NS_ENDHANDLER

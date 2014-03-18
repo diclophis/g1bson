@@ -1,17 +1,20 @@
+
+#include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include <X11/Xlib.h>
+#include <X11/extensions/XTest.h>
 #include <X11/extensions/XInput2.h>
 #include <X11/keysym.h>
 #include <X11/extensions/XI2.h>
 #include <X11/extensions/XInput.h>
 #include <X11/Xatom.h>
 
-unsigned long  _pid;
-Atom           _atomPID;
-Display       *_display;
-Window        proofWin;
 
+//unsigned long  _pid;
+//Atom           _atomPID;
+//Display       *_display;
+//Window        proofWin;
 
 Window g1bson_create_window(Display *dpy) {
   Window win = XCreateSimpleWindow(
@@ -291,7 +294,7 @@ void g1bson_drop_mpx (Display *dsp, int mpx) {
 
 
 void g1bson_fake_keystroke (
-Display *dsp, Screen *screen, int window_id, char symbol,
+Display *dsp, Screen *screen, Window window_id, char symbol,
 int id_master_kbd, int id_slave_kbd,
 int id_master_ptr, int id_slave_ptr
 ) {
@@ -300,92 +303,49 @@ int id_master_ptr, int id_slave_ptr
 
   int dummy[1] = { 0 };
 
-  int current_pointer;
+  //int current_pointer;
   XDevice *dev;
 
   if (0) {
-  dev = XOpenDevice (dsp,
-                     id_slave_kbd);
-    printf("typing %d\n", window_id);
+    dev = XOpenDevice (dsp, id_slave_kbd);
+    printf("typing %d\n", (int)window_id);
 
-
-    if (XTestFakeDeviceKeyEvent (dsp,
-                                 dev,
-                                 code,
-                                 True,
-                                 dummy, 0, CurrentTime)==0)
-    {
+    if (XTestFakeDeviceKeyEvent (dsp, dev, code, True, dummy, 0, CurrentTime) == 0) {
       printf ("Faking key event failed.\n");
     }
 
     XFlush (dsp);
 
-    if (XTestFakeDeviceKeyEvent (dsp,
-                                     dev,
-                                     code,
-                                     False,
-                                     dummy, 0, CurrentTime)==0)
-    {
+    if (XTestFakeDeviceKeyEvent (dsp, dev, code, False, dummy, 0, CurrentTime) == 0) {
       printf ("Faking key event failed 2.\n");
     }
-  XCloseDevice (dsp,
-                dev);
+    
+    XCloseDevice (dsp, dev);
     XFlush (dsp);
   }
 
-  int axis[2] = {480, 480};
+}
 
-  int x=0;
+void g1bson_fake_mouse(Display *dsp,  int id_master_ptr, int x, int y) {
+ if (XIWarpPointer(dsp, id_master_ptr, None, None, 0, 0, 0, 0, x, y)) {
+   printf("no mouse\n");
+ }
+ XPending(dsp);
 
-  sleep(1);
-
-  for (x=0; x<5; x++) {
-    axis[0] += (x * 10);
-
-    int src_x = 0;
-    int src_y = 0;
-    int src_width = 1024;
-    int src_height = 1024;
-
-    if (0) {
-      XWarpPointer(dsp, None, None, src_x, src_y, src_width, src_height, 10, 10);
-      //XFlush (dsp);
-      sleep(5);
-      printf("v1\n");
-      XPending(dsp);
-    }
-
-    if (0) {
-      int r = XTestFakeMotionEvent(dsp, -1, axis[0], axis[1], CurrentTime);
-      printf("moved: %d\n", r);
-      sleep(1);
-    }
-
-    if (1) {
-      //XDevice *mdev = XOpenDevice (dsp,
-      //                   id_slave_ptr);
-      if (XIWarpPointer(dsp, id_master_ptr, None, None, 0, 0, 0, 0, 10, 40)) {
-        printf("no mouse\n");
-      }
-      XPending(dsp);
-      sleep(1);
-      //XCloseDevice (dsp,
-      //              mdev);
-    }
-  }
-
-  XFlush (dsp);
+ XFlush (dsp);
 }
 
 
-void g1bson_search(Window w) {
+Window g1bson_search(Display *display, Window w) {
+  
+  /*
   // Get the PID for the current Window.
   Atom           type;
   int            format;
   unsigned long  nItems;
   unsigned long  bytesAfter;
   unsigned char *propPID = 0;
-  if(Success == XGetWindowProperty(_display, w, _atomPID, 0, 1, False, XA_CARDINAL,
+  if(Success == XGetWindowProperty(display, w, _atomPID, 0, 1, False, XA_CARDINAL,
                                    &type, &format, &nItems, &bytesAfter, &propPID))
   {
     int pppid = 0;
@@ -394,32 +354,40 @@ void g1bson_search(Window w) {
     {
       pppid = ((*((unsigned long *)propPID)));
       
-      if (pppid == 24274) {
+      //if (pppid == 1708) {
 
-        printf("PID: %d %lu\n", w, (*((unsigned long *)propPID)));
-        proofWin = w;
-      }
+        printf("PID: %lu\n", (*((unsigned long *)propPID)));
+        //proofWin = w;
+      //}
 
       XFree(propPID);
     }
   }
 
+  if (w) {
+    return;
+  }
+  */
+  
   // Recurse into child windows.
   Window    wRoot;
   Window    wParent;
   Window   *wChild;
   unsigned  nChildren;
-  if(0 != XQueryTree(_display, w, &wRoot, &wParent, &wChild, &nChildren))
+  if(0 != XQueryTree(display, w, &wRoot, &wParent, &wChild, &nChildren))
   {
     unsigned i;
     for(i = 0; i < nChildren; i++) {
-      g1bson_search(wChild[i]);
+      return wChild[i];
     }
   }
+  
+  return -1;
 }
 
 
 void g1bson_windows_matching_pid(Display *display, Window wRoot, unsigned long pid) {
+  /*
   // Get the PID property atom.
   _atomPID = XInternAtom(display, "_NET_WM_PID", True);
   if(_atomPID == None)
@@ -432,10 +400,11 @@ void g1bson_windows_matching_pid(Display *display, Window wRoot, unsigned long p
   _pid = pid;
 
   g1bson_search(wRoot);
+  */
 }
 
 
-int main(int argc, char **argv) {
+int g1bson_test(int argc, char **argv) {
   Display *dpy;
   int xi_opcode, event, error;
   Window win;
@@ -480,11 +449,9 @@ int main(int argc, char **argv) {
     Screen *screen = XDefaultScreenOfDisplay(dpy);
     Window rootWindow = XRootWindowOfScreen(screen);
 
-    printf("WTF: %d\n", rootWindow);
-
     g1bson_windows_matching_pid(dpy, rootWindow, 0);
 
-    g1bson_fake_keystroke(dpy, screen, proofWin, 'X', xid_master_kbd, xid_slave_kbd, xid_master_ptr, xid_slave_ptr);
+    //g1bson_fake_keystroke(dpy, screen, proofWin, 'X', xid_master_kbd, xid_slave_kbd, xid_master_ptr, xid_slave_ptr);
 
     g1bson_drop_mpx(dpy, xid_master_kbd);
   }
