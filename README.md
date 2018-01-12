@@ -50,4 +50,4 @@ X11 Window Manager with extended multi-pointer support
   * http://lapcatsoftware.com/blog/2007/05/16/working-without-a-nib-part-1/
   * http://stackoverflow.com/questions/6388219/creating-nsapplication-in-cocoa
   * http://stackoverflow.com/questions/1829706/how-to-query-x11-display-resolution
-
+  * http://askubuntu.com/questions/34657/how-to-make-x-org-listen-to-remote-connections-on-port-6000

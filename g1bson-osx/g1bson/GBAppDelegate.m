@@ -14,7 +14,8 @@
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
   // Insert code here to initialize your application
-  
+  NSLog([NSString stringWithUTF8String:getenv("DISPLAY")]);
+    
   conn = [[XXConnection alloc] initWithHost: [NSString stringWithUTF8String:getenv("DISPLAY")]
                                      withPosition: XXWindowNorth
                                      withUsername: @""

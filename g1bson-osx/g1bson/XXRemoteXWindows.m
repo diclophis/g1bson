@@ -66,8 +66,9 @@
     printf("cursor is %d\n", c_id);
     cursor_no  = c_id;
 
-    display = XOpenDisplay((char*)[hostname cStringUsingEncoding:NSUTF8StringEncoding]);
-
+    //display = XOpenDisplay((char*)[hostname cStringUsingEncoding:NSUTF8StringEncoding]);
+    display = XOpenDisplay(NULL);
+      
     if (display == NULL)
     {
       // Failed to open the connection, so fail to create the object
@@ -82,6 +83,7 @@
       
       {
         srand((int)time(NULL));
+          
         int i;
         for(i = 0; i < 20; i++){
           name[i] = '0' + rand() % 10;
